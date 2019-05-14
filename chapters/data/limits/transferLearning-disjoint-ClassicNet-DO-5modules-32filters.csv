@@ -1,0 +1,7 @@
+layerIdx	meanTransferAcc	stdTransferAcc
+bn1	100.00	0.00
+bn2	99.81	0.05
+bn3	99.58	0.3
+bn4	99.44	0.4
+bn5	99.63	0.3
+fc1	97.31	1.3

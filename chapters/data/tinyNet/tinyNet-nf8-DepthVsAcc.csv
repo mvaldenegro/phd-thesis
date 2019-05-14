@@ -1,0 +1,7 @@
+numConvModules	meanTestAcc	stdTestAcc
+1	95.78	0.45
+2	98.23	0.29
+3	98.43	0.23
+4	98.81	0.15
+5	99.60	0.13
+6	99.75	0.05
