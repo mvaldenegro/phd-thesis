@@ -1,0 +1,496 @@
+\chapter[Marine Debris As Motivation For Object Detection]{Marine Debris As \newline Motivation For Object Detection}
+\label{chapter:motivation}
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.95\textwidth]{chapters/images/natural-garbage/manarola-debris-cut.jpg}
+    \caption[Surface Marine Debris at Manarola, Italy.]{Surface Marine Debris captured by the author at Manarola, Italy.}
+    \label{md:manarola-surface}
+\end{marginfigure}
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.95\textwidth]{chapters/images/natural-garbage/union-canal-surface-garbage.jpg}
+    \caption[Surface Marine Debris at the Union Canal in Edinburgh, Scotland]{Surface Marine Debris captured by the author at the Union Canal in Edinburgh, Scotland.}
+    \label{md:edinburgh-surface}
+\end{marginfigure}
+
+This chapter describes the "full picture" that motivates this thesis. While the introduction provides a summarized version of that motivation, this chapter will take a deeper dive into the problem of polluting our natural environment, with a specific look into pollution of water bodies.
+
+After reading this chapter, the reader will have a general idea of how our daily lives are affected by marine debris, and how the use of Autonomous Underwater Vehicles can help us to reduce this problem.
+
+This chapter is structured as follows. First we define what is marine debris, how it is composed and where it can be found in the seafloor. Then we describe the effect of marine debris in the environment as pollutant and its ecological consequences. We then make the scientific argument that submerged marine debris can be recovered by AUVs. Finally we close the chapter by describing a small datasets of marine debris in sonar images, which we use in the technical chapters of this thesis.
+
+The author got his initial motivation about Marine Debris by experimental observation of the environment. During a couple of excursions to Loch Earn (Scotland) we observed submerged marine debris (beer and soft drink cans, tires) in the bottom of the Loch, and during daily commute to Heriot-Watt University through the Union Canal in Edinburgh, we also observed both submerged and floating marine debris. Figures \ref{md:edinburgh} shows small submerged objects in the Union Canal, while Figure \ref{md:edinburgh-large} shows large objects that were discarded in the same place.
+
+\begin{figure*}[tb]
+    \centering
+    \setfloatalignment{t}
+    \forceversofloat
+    \subfloat[Refrigerator]{
+        \includegraphics[height = 0.14\textheight]{chapters/images/natural-garbage/union-canal-fridge2-enhanced.jpg}
+    }
+    \subfloat[Traffic Cone and Pram]{
+        \includegraphics[height = 0.14\textheight]{chapters/images/natural-garbage/union-canal-pram-cone-enhanced.jpg}    
+    }
+    \subfloat[Shopping Cart]{
+        \includegraphics[height = 0.14\textheight]{chapters/images/natural-garbage/union-canal-shopping-cart2-enhanced.jpg}
+    }
+    \caption[Photos of Large Submerged Marine Debris at the Union Canal in Edinburgh, Scotland]{Photos of Large Submerged Marine Debris captured by the author at the Union Canal in Edinburgh, Scotland.}
+    \label{md:edinburgh-large}
+\end{figure*}
+
+\FloatBarrier
+\section{What is Marine Debris?}
+
+\marginnote {Marine Debris}Marine Debris encompasses a very large category of human-made objects that have been discarded, and are either floating in the ocean, partially submerged in the water column, or fully submerged and lying in the floor of a water body . 
+
+Marine Debris is mostly composed of processed materials \cite[-3em]{weis2015marine} that are useful to human populations, such as plastics, metals, wood, glass, styrofoam, rubber, and synthetic materials derived from the previously mentioned such as nylon. 
+
+The original use of many items discarded as marine debris is: food and drink packaging, fishing gear, plastic bags, bottles, maritime use, and others. Many of these categories are intended to be single-use items, and it can be expected that many objects used by maritime tasks end up in the ocean.
+
+\begin{figure*}[tb]
+    \centering
+    \forcerectofloat
+    \subfloat[Chips Bag]{
+        \includegraphics[height = 0.13\textheight]{chapters/images/natural-garbage/union-canal-bag-cut.jpg}
+    }
+    \subfloat[Glass Bottle]{
+        \includegraphics[height = 0.13\textheight]{chapters/images/natural-garbage/union-canal-bottle-enhanced.jpg}    
+    }
+    \subfloat[Can]{
+        \includegraphics[height = 0.13\textheight]{chapters/images/natural-garbage/union-canal-can-enhanced.jpg}
+    }
+    
+    \subfloat[Cans]{
+        \includegraphics[height = 0.13\textheight]{chapters/images/natural-garbage/union-canal-seethru-cans-enhanced.jpg}
+    }
+    \subfloat[Traffic Cone]{
+        \includegraphics[height = 0.13\textheight]{chapters/images/natural-garbage/union-canal-seethru-cone-enhanced.jpg}
+    }
+    \caption[Photos of Small Submerged Marine Debris at the Union Canal in Edinburgh, Scotland]{Photos of Small Submerged Marine Debris captured by the author at the Union Canal in Edinburgh, Scotland.}
+    \label{md:edinburgh}
+\end{figure*}
+
+There are several ways Marine Debris ends up in the environment:
+
+\begin{description}
+    \item[Fishing] Activities that capture marine animals for human consumption are a major source of marine debris \cite{dayton1995environmental}. Fishing vessels regularly use nets that might get stuck on the bottom of the water body, and most of the time fishermen just decide to cut the nets, leaving them in the environment and becoming marine debris. Fishing line used by more amateur fishermen can also be considered marine debris, and any cut line usually floats in water. Most fishing nets are submerged and not usually visible to the naked eye. Fishing nets and lines are mostly made out of different kinds of plastics.
+    
+    \item[Accidental Release] Human-made debris can make it out to rivers or oceans by accident. One example is catastrophical events such as Tsunamis \cite[-10em]{mori2011survey}, Hurricanes, Storms, etc. But these events are rare and not controlled by humans. A more common kind of accidental release is garbage left at beaches \cite[-6em]{smith1997marine}, as high tide can carry left debris and make it into the ocean. Similar mechanisms work in rivers and estuaries, but it is more common that garbage is directly dropped into a river. Scientific research can also sometimes accidentally leave marine debris in the environment.
+    
+    \item[Intentional Release] There are of course people and entities that will directly dump garbage into the ocean (usually from ships) or in rivers and lakes, without any consideration about damage to the environment. Legality of these releases varies with country, but generally it is very hard to enforce any kind of regulation, specially in developing countries mostly due to economical needs.
+    
+    \item[Improper Waste Management] Corresponds to waste that escapes containment\cite{willis2017differentiating} due to improper management, such as overflow from filled garbage cans, or failures in landfill containment. These can reach water bodies by a variety of means, such as the wind carrying lightweight plastic bags, or cans from a garbage can in a sidewalk falling and reaching storm drains. This is the most controllable factor for governments and NGOs in order to prevent debris from reaching water bodies, as more infrastructure can always be built.
+\end{description}
+
+The dropping of emissions and garbage in water bodies is regulated by the \textit{International Convention for the Prevention of Pollution from Ships} (MARPOL 73/78) \cite[-3em]{canyon1978international}, which was signed in 1973 but not ratified until 1978. It prohibits all release of non-food solid waste, while regulating liquid waste.
+
+\begin{figure}[tb]
+    \centering
+    \subfloat[Plastic Bottle]{
+        \includegraphics[height = 0.11\textheight]{chapters/images/natural-garbage/stockholm-bottle-cut.jpg}
+    }
+    \subfloat[Plastic Objects and Drink Carton][Plastic Objects and \newline Drink Carton]{
+        \includegraphics[height = 0.11\textheight]{chapters/images/natural-garbage/stockholm-bottles-cut.jpg}    
+    }
+    \subfloat[Submerged Plastic Bags][Submerged \newline Plastic Bags]{
+        \includegraphics[height = 0.11\textheight]{chapters/images/natural-garbage/stockholm-plastic-bags-cut.jpg}
+    }
+    \vspace*{0.5cm}
+    \caption[Photos of Surface Marine Debris in Stockholm, Sweden]{Photos of Surface Marine Debris captured by the author in Stockholm, Sweden.}
+    \label{md:stockholm}
+\end{figure}
+
+\newpage
+Spengler et al. \cite{spengler2008methods} surveys the methods for marine debris in the seafloor, indicating that the most common method used to study submerged marine debris is a bottom trawl net, followed by diving-related techniques. Sonar is also used to survey seafloor areas. This research paper also describes 26 other studies that survey seafloor marine debris, noting the large variation of sampled area (from 0.008 km$^2$ to 4016 km$^2$), and the lack of a unified methodology to categorize and measure marine debris.
+
+As mentioned before, Marine debris can be found along different parts of the water column. Ryan et al. \cite[-3em]{ryan2014litter} surveys the South Atlantic garbage patch, and finds out that Polystyrene and foamed plastics mostly are protruding the surface, while ropes and nets float in the surface, and most of bags and food packaging sinks to the sea bottom. These results are consistent with our experience but miss that bottle material determines if it sinks or floats. We have found out that most light plastics float, while heavy plastics and glass immediately sinks to the bottom. Whether the bottle is open or closed (with a cap) also influences, as a closed bottle will not sink because it is filled by air, and it will freely float instead.
+
+Debris materials are not equally distributed. The most common material is plastics by far, which is consistent with production and use of single-use plastic items. Li et al. \cite[-4em]{li2016plastic} surveys the literature about plastic marine debris, finding that field surveys have found up to $98 \%$ of plastic in their marine debris samples, but this ratio varies wildly between sites. The highest ratio of plastic debris is found in the North Pacific Ocean, while the lowest ratio is found in the Eastern China Sea and South Korea Sea.
+
+A large scale survey of debris in the Monterey bay was presented by Schlining et al.\cite[-9em]{schlining2013debris}, where the authors analyzed thousands video hours captured by ROVs\sidenote[][2em]{Obtained for a period of 22 years by MBARI, between 1989 and 2011}, finding 1537 pieces of submerged marine debris, which were classified as $33 \%$ plastics, $23 \%$ metal, $14 \%$ rope, $7 \%$ unknown debris, $6 \%$ glass, $5 \%$ fishing debris, $4 \%$ paper, and others with less than $3 \%$ like rubber, fabrics, clothing, wood, etc. Majority of the items were found along the Monterey Canyon system, which makes sense as debris could be dragged by underwater currents and accumulated there.
+
+Another study in the Western Gulfs of Greece by Stefatos et al.\cite{stefatos1999marine}, where the debris recovered by nets from fishing boats was counted. In the Gulf of Patras 240 items per km$^2$ were found, while in the Gulf of Echinadhes 89 items per km$^2$ were recovered. Debris distributions in both sites are similar, with over $80 \%$ of recovered debris being plastics, $10$ \% were metals, and less than $5 \%$ were glass, wood, nylon, and synthetics. The authors attribute a high percentage of drink packaging in Echinadhes to shipping traffic, while general packaging was mostly found in Patras, suggesting that the primary source for this site is carried by land through rivers.
+
+Chiba et al. \cite{chiba2018human} built and examined a database of almost 30 years (1989 - 2018) of video and photographic evidence of marine debris at deep-sea locations around the world. They found 3425 man-made debris pieces in their footage, where more than one third was plastics, and $89 \%$ were single use products. This dataset covers deep-sea parts of the ocean, showing that marine debris has reached depths of 6-10 thousand meters, at distances of up to 1000 km from the closest coast.  At the North-Western Pacific Ocean, up to 17-335 debris pieces per km$^2$ were found at depths of 1000-6000 meters. The deepest piece of debris was found in the Mariana Trench at 10898 meters deep. Their survey shows that plastic debris accumulates in the deepest parts of the ocean from land-based sources, and they suggest that a way to monitor debris is needed.
+
+Jambeck et al.\cite{jambeck2015plastic} studies the transfer of plastic debris from land to sea. The authors built a model that estimates up to an order of magnitude the contribution of each coastal country to global plastic marine debris. The model considers plastic resin production, population growth, mass of plastic waste per capita, and the ratio of plastic waste that it is mismanaged and has the potential to become marine debris. According to this mode, the top five contributors of plastic marine debris per year are the countries that hold the biggest coastal populations, namely China ($[1.3 - 3.5]$ MMT)\footnote{Millions of Metric Tons (MMT)}, Indonesia ($[0.5 - 1.3]$ MMT), The Philippines ($[0.3 - 0.8]$ MMT), Vietnam ($[0.3 - 0.7]$ MMT), an Sri Lanka ($[0.2 - 0.6]$ MMT). If the coastal European Union countries would be considered as a single source, it would be ranked 18th with $[0.05 - 0.12]$ MMT.
+
+Note that this model does not consider marine debris generated by cruise ships, which are rumored to be a major contributor to marine debris in the Mediterranean sea. These results are consistent with other measurements \cite{eriksen2014plastic}, and point that the biggest contributor to marine debris from land is just the level of development. Less developed countries usually lack good waste management facilities, while developed countries manage their waste properly. For example, Recycling in the European Union is overall of good quality and therefore much less waste goes into the ocean as marine debris in Europe. It is also important that waste is included in development policies and plans, in order for waste management to scale in relation to a country's development status.
+
+Overall studies about the composition of marine debris are usually spatially localized, but overall there is a high consistency between studies about plastics being the most common marine debris element, with metal and glass being second. Plastics are explained by the ubiquity of single use items made out of this material, mostly food and drink packaging. Fishing materials and ropes are also commonly found in areas where fishermen work.
+
+\section{Ecological Issues with Marine Debris}
+
+In the previous section we have described what is marine debris, what materials is it composed of, and how it reaches bodies of water in the environment. In this section we will describe how marine debris pollutes the environment and what kind of ecological issues it produces.
+
+Marine debris poses serious dangers to native marine life. One of the biggest issues is that marine animals can get entangled in discarded fishing nets, six pack rings, or derelict ropes \cite{laist1997impacts}. This could cause the animal to asphyxiate (for example, sea turtles that need air), or severely limiting its movement which could cause to starve (for fish). There are multiple reports of this happening in the scientific literature \cite[1em ]{gall2015impact} and public media.
+
+Fishing gear is overall quite deadly for marine life, with effects on reducing biodiversity and thus affecting the ecosystem. For other kinds of debris, marine animals can accidentally ingest them, depending on its size and buoyancy.
+
+Plastic debris is the most dangerous material, as it usually floats, and ultraviolet radiation from sunlight slowly breaks it down. After many iterations of this process, plastic transform into small (less than 5mm) particles that are called micro-plastics. Marine animals can easily ingest these particles without noticing\cite[-5em]{laist1987overview}, which leads to poisoning or blocking of airways or digestive tracts, killing the animal. Marine fauna that survives might be captured for human consumption, from where plastics might enter the human food chain.
+
+There are also increasing effects due to the food chain. As plastic breaks up into large number of smaller pieces, there is a higher chance that small marine animals and filtering feeders will ingest it, from where bigger animals can consume them, propagating up into the food chain, eventually reaching humans.
+
+Not only marine animals that live in the water itself can be affected by marine debris. There are many reports\cite{wilcox2015threat} of coastal and sea birds eating plastic that floats in the water, or capturing fish that has previously consumed micro-plastics. This has a more profound effect in this kind of animal, as they have a higher chance of accidentally ingesting a medium sized piece of plastic, and for debris to block their airways or digestive systems. There are studies that show a decreasing trend in this kind of birds \cite{paleczny2015population}, which could be in part caused by the increasing amounts of plastic debris in our coasts and oceans.
+
+Plastics also collects other kinds of chemical pollutants present in the water (such as pesticides, flame retardants, industrial waste, oil, etc), making the polluted plastic particles highly toxic\cite{engler2012complex}. This increases the potential of marine debris to be harmful, specially for human populations, as they might be consuming seafood and fish that could be contaminated by chemicals transferred by debris. Preventing this kind of contamination of food produce will likely increase the costs associated to food.
+
+Other kinds of debris such as rubber and wood can also be problematic as marine animals can ingest them, but in significantly lower quantities than plastics.
+
+A more direct effect of debris in human population can happen as it can washes up in beaches, hurting children and unbeknown people. Accumulation of debris in beaches can also reduce the economic value of tourism in coastal areas \cite{engler2012complex}, indirectly hurting human populations. Land animals that live close to coasts and shores can also be affected by floating or accumulated debris, in similar ways as marine animals.
+
+Discarding plastic that could be recycled makes no economic sense, as the source material for plastic is oil, which is not infinite and we will run out of it at some point. The same could be said of metals and rubbers.
+
+Overall, we should not pollute the environment because it can have unexpected consequences and it is not economically viable. Sustainability is an important topic to reach a development level where our lifestyle does not require the sacrifice of the planet's ecosystem. 
+
+\section{Proposal - Marine Debris Recovery with AUVs}
+
+This section we makes a proposal that AUVs can be used to recover marine debris, which could have more scientific and civilian applications than other current uses.
+
+We believe that the Underwater Robotics community is too dominated by military and non-civilian applications. This is clearly seen by the large literature in \textit{mine countermeasures} and related topics into detecting military mines in underwater environments. We believe this is more pronounced inside the object detection and automatic target identification sub-field, as most of the literature covers methods specifically designed to perform recognition of marine mines.
+
+While detecting and removing marine mines could have a clear humanitarian value, this research is mostly performed by military research centers and defense companies. This is generally fine but it is problematic from a scientific point of view, as data is usually classified and not available for the scientific community, which reduces public interest and the introduction of new ideas into the field. We see this reflected in the fact that there is no public dataset that contains this kind of objects on sonar images.
+
+Overall there are other current non-military research directions in Marine Robotics that are also worth pursuing, such as Underwater Archeology, Mapping, Pipe Search and Following, etc. The Oil and Gas Industries have also interesting applications that require further research. In general humanitarian applications of Marine Robotics have not been explored.
+
+There are some efforts to capture or remove marine debris, but overall these are weak and not at large scale. Volunteers, non-governmental organizations, and local governments do efforts\cite[-10em]{nelms2017marine} to remove debris from beaches, coastal areas, and rivers, but these are localized and usually small scale.
+
+Boats and nets can be used to capture surface debris at sea \cite[-5em]{kader2015design}, while debris traps can be installed in rivers and affluents to capture debris\cite[-1em]{beduhn1966removal} before it reaches the sea and is lost. In general these are quite low technology solutions, that work at smaller scales and localized areas, but cannot be used to perform large scale removal of debris in the seafloor.
+
+Rochman et al. \cite[-1em]{rochman2016strategies} suggests that marine debris removal strategies should be diverse, given the large diversity of debris materials and types, and the ubiquity of its location.
+
+The Rozalia Project \footnote{\url{https://rozaliaproject.org/}} seems to be an effort to develop robots for debris removal, but we could not find project status or additional information. Recently a startup company called \textit{The Ocean Cleanup} \footnote{\url{https://www.theoceancleanup.com/}} is developing technologies to remove surface marine debris. In both cases it seems that the efforts concentrate in surface debris, while we propose technologies for submerged debris.
+
+For these reasons, this thesis proposes that Autonomous Underwater Vehicles can be used to survey, map, and recover submerged marine debris from the seafloor. The basic idea is that we can equip an AUV with both a perception sensor and a manipulator, with advanced object detection algorithms using sensor data to locate and identify marine debris, and the manipulator with an appropriate end effector to capture the piece of debris and collect it inside a special area or basket inside the AUV.
+
+While this proposal sounds simple, it entails many difficult research questions, for example:
+
+\begin{enumerate}
+    \item What is the most appropriate perception sensor to sense submerged debris in any kind of marine environment?
+    \item How to perceive and detect submerged debris in a perception sensor without making assumptions in object shape or environment? What are the most appropriate algorithms?
+    \item What is the most appropriate manipulator arm and end effector configuration to capture the largest variety of submerged debris?
+    \item How can perception and manipulation be combined for successful capture of submerged debris, while making as little assumptions on object shape or environment?
+\end{enumerate}
+
+This thesis only develops questions related to perception of submerged marine debris, more precisely, Question 2. We believe that the most appropriate sensor to detect submerged debris is a high spatial resolution sonar sensor, and for this purpose we use an ARIS Explorer 3000. \cite[-4em]{arisExplorer3K}, which has a per-pixel spatial resolution of up to 3.0 millimeters. This sensor is ideal to "see" small objects (less than 10 cm) and provides a high frame-rate of up to 15 Hz, which is ideal for manipulation. In comparison other sonar sensors such as sidescan have multiple centimeters per pixel spatial resolution, for which objects like bottles would be only represented as a few pixels, not enough for successful recognition.
+
+Synthetic Aperture Sonar (SAS) could also be an option, but only for tasks like surveying an area before using a high frame-rate sensor for precision debris capture, as it is not suitable to combine SAS with a manipulator due to the low frame-rate of the sensor.
+
+It is well known that performing manipulation in underwater environments is challenging \cite{ridao2014intervention}, specially when combining this with a sonar sensor, due to reflections, noise, and unexpected interactions between the sonar sensor, the environment, and a moving manipulator arm.
+
+One very important point that must be made now is that we are not proposing a "silver bullet" that can fully solve the problem of marine debris, or the general issues with waste management. The first and most obvious solution is not to pollute our environment. Recycling and properly disposal of waste is a key element of any sustainable policy. Our proposal only deals with the submerged marine debris that is currently lying on the seafloor, and does not prevent further debris being discarded into the ocean and other water bodies. Some debris also floats and does not sink, and these would require a whole different set of techniques to be collected.
+
+\section{Datasets used in this Thesis}
+
+This section describes the data used to train deep neural networks and to produce all the results presented in further chapters. We describe both the data capture setup and the data itself.
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.95\textwidth]{chapters/images/dataset/nessie-aris.jpg}
+    \caption{Nessie AUV with ARIS Sonar attached in the underside.}
+    \label{md:nessie-aris}
+\end{marginfigure}
+
+There are no public datasets that contain marine debris in sonar images, and for the purposes of this thesis, a dataset of sonar images with bounding box annotations. We captured such dataset on the Water Tank of the Ocean Systems Lab, Heriot-Watt University, Edinburgh, Scotland. The Water Tank measures approximately $(W, H, D) = 3 \times 2 \times 4$ meters, and on it we submerged the Nessie AUV with a sonar sensor attached to the underside, as shown in Figure \ref{md:nessie-aris}.
+
+\subsection{Sonar Sensing}
+
+The sonar sensor used to capture data was the ARIS Explorer 3000\cite[-6em]{arisExplorer3K} built by SoundMetrics, which is a Forward-Looking Sonar, but can also be considered to as an \textit{acoustic camera} due to its high data frequency (up to 15 Hz). A big advantage of this sensor is its high spatial resolution, as one pixel can represent up to 2.3 millimeters of the environment.
+
+This sonar has 128 acoustic beams over a $30^\circ \times 15^\circ$ field of view, with a $0.25^\circ$ spacing between beams. The minimum distance range of the sonar is around 70 centimeters, and the maximum distance depends on the sampling frequency. at 1.8 MHz the range is up to 5 meters, while at 3.0 MHz the range is only 5 meters. Depending on distance this Sonar has 2.3 millimeters per pixel spatial resolution in the close range, and up to 10 centimeters per pixel at the far range.
+
+We only have limited information on how the ARIS Explorer sonar works, as we believe most of the information is a trade secret of SoundMetrics and/or classified by the US Navy. A related sonar sensor is the DIDSON (Dual-Frequency Identification Sonar) \cite[-2em]{belcher2002dual}, which is an earlier iteration of what later would become the ARIS sonar. Development of the DIDSON sonar was funded by the US Navy through the Space and Naval Warfare Systems Center Bayside (San Diego, California).
+
+The basic working of the ARIS sonar is that it uses an \textit{acoustic lens} \cite[-2em]{wu2010beam} to perform beamforming and focus beams to insonify an area of the seafloor with a higher resolution than normally possible with classic sonars.  This works in a similar way that of a optical camera, where a lens allows to \textit{zoom} into a part of the scene. This also means that the acoustic lens moves inside the sonar in order to focus different parts of the scene, and focusing distance can be set by the user.
+
+There is some publicly available information about the use of acoustic lenses with the DIDSON sonar. Belcher et al in 1999 \cite[-6em]{belcher1999beamforming} showed three high-frequency sonar prototypes using acoustic lenses, and in 2001 \cite[-1em]{belcher2001object} they showcased how the DIDSON sonar can be used for object identification. A Master Thesis by Kevin Fink \cite[2em]{fink1994computer} produced computer simulations of sound waves through an acoustic lens beamformer. Kamgar-Parsi et al \cite[1em]{kamgar1998underwater} describes how to perform sensor fusion from multiple views of the scene obtained by a moving acoustic lens.
+
+\subsection{Sonar Image Capture}
+
+We were motivated to use a water tank to capture our dataset due to the difficulties in using a real world underwater environment. We initially mounted the ARIS sonar on a surface vehicle (An Evologics Sonobot) and tested it at some locations around Edinburgh, Scotland\footnote{The Union Canal and Tally Ho Flooded Quarry}, since it would allows us to precisely move the sonar underwater and to have line of sight with the vehicle, but surface waves produced by the wind provoked rotation of the Sonobot on the roll axis, moving the sonar sideways, and producing heavy interference between the sound beams. This way the produced images that were not usable. Some examples of these images with beam interfence are shown in Figure \ref{md:sonar-beam-interference}.
+
+\begin{marginfigure}[1em]
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/plastic-bottle.jpg}
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/glass-bottle.jpg}
+    \caption{Samples of Bottle Class}
+    \label{md:bottles}
+\end{marginfigure}
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/can.jpg}
+    \caption{Sample of Can Class}
+    \label{md:can}
+\end{marginfigure}
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/chain.jpg}
+    \caption{Sample of Chain Class}
+    \label{md:chain}
+\end{marginfigure}
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/drink-carton.jpg}
+    \caption{Sample of Drink Carton Class}
+    \label{md:drink-carton}
+\end{marginfigure}
+
+An alternative would have been to use the Nessie AUV, but tele-operating it underwater is difficult since the water at many sites is cloudy, preventing us to see the vehicle and the objects through the water, and we would need to rely on sonar navigation only. Placing the objects in a real environment is also not easy for the same reasons, and recovering the marine debris that we placed would be problematic, depending on the depth of the bottom floor. We do not wish to pollute the environment this way.
+
+Using a water tank is a controlled environment, where the objects are clearly visible (fundamental for labeling), there is no environmental interference, and placing the objects is considerably easier, with line of sight possible due to the clear water and shallow bottom.
+
+The structure used to mount the sonar under the AUV allows for variable orientation of the Sonar sensor in the pitch axis, approximately in the range $[0^\circ, 75^\circ]$. We manually set the pitch angle to a fixed value between $15^\circ$ and $30^\circ$ in order for the acoustic beam to insonify the bottom of the water tank and we can see the objects in the output sonar image.
+
+Objects were placed in the floor of the water tank, and were laid out in a pseudo-random way, and non-overlapping with each other, with the general idea that multiple objects can be in the sonar's field of view at the same time. Positioning of each object was performed by dropping them into the water, and manually adjusting position using a pole with a hook.
+
+We tele-operated the AUV in order to capture different views of objects in the scene, but we had limited range due to the size of the water tank. This means that not all perspectives of the objects were observed, but we did get many perspectives of several objects. The vehicle was operated on an approximate quarter of circle path, at an approximate speed of 0.1 meters per second. Both the path and speed were constrained by the size of our water tank and the minimum range of the sonar sensor.
+
+We used the ARIScope application provided by Sound Metrics to capture data at a frequency of 3.0 MHz, with focusing, gain setting, and initial image processing done by the application, while we manually selected the minimum and maximum ranges in order to contain our scene. We captured images at 15 Hz with the AUV moving, which produces a low framerate video.
+
+Figure \ref{md:scene} shows one view of the objects placed in the scene. We moved the objects around before capturing each scene in order to introduce variability and make it possible to capture many views of an object.
+
+Captured sonar data was extracted from \texttt{.aris} files and projected into a polar field of view and saved as \texttt{PNG} files.
+
+To produce the dataset in this thesis, we selected a small group of household and typical marine objects that we placed in the water tank. This is motivated by the fact that most marine debris is composed of discarded household objects \cite{chiba2018human}.
+
+Household objects used to build the dataset correspond to: bottles of different materials, tin cans, different drink cartons, and plastic shampoo bottles. For typical marine objects we used a chain, a hook, a propeller, a rubber tire, and a mock-up valve. While Marine Debris covers far more objects than we did, we believe this set of objects is appropriate for the scope of this thesis. 
+
+We also included a set of marine objects as distractors (or counter examples), namely a chain, a hook, a propeller, a rubber tire, and a mock-up valve. These objects can be expected to be present in a marine environment \cite{dayton1995environmental} due to fishing and marine operations, and are not necessarily debris.
+
+The object set was pragmatically limited by the objects we could easily get and were readily available at our lab. There is a slight imbalance between the marine debris and distractor objects, with approximately 10 object instances for marine debris, and 5 instances of distractors.
+
+A summary of the object classes is shown in Table \ref{md:classes}. Bottles of different materials that lie horizontally in the tank floor are grouped in a single class, but a beer bottle that was standing on the bottom was split into its own class, as it looks completely different in a sonar image. A shampoo bottle was also found standing in the tank bottom and assigned its own class. The rest of the objects map directly to classes in our dataset. We also have one additional class called \textit{background} that represents anything that is not an object in our dataset, which is typically the tank bottom. Due to the high spatial resolution of the ARIS Explorer sonar, it is possible to see the concrete marks in the tank bottom clearly in a sonar image.
+
+\begin{table*}[t]
+    \begin{tabular}{llp{8cm}l}
+        \hline 
+        Class ID 	& Name 				& Description & Figure\\ 
+        \hline 
+        0			& Bottle			& Plastic and Glass bottles, lying horizontally & \ref{md:bottles}\\
+        1			& Can				& Several metal cans originally containing food & \ref{md:can} \\
+        2			& Chain				& A one meter chain with small chain links & \ref{md:chain}\\
+        3			& Drink Carton		& Several milk/juice drink cartons lying horizontally & \ref{md:drink-carton} \\
+        4			& Hook				& A small metal hook & \ref{md:hook} \\
+        5			& Propeller			& A small ship propeller made out of metal & \ref{md:propeller} \\
+        6			& Shampoo Bottle	& A standing plastic shampoo bottle & \ref{md:shampoo-bottle} \\
+        7			& Standing Bottle	& A standing beer bottle made out of glass & \ref{md:standing-bottle}\\
+        8			& Tire				& A small rubber tire lying horizontally & \ref{md:tire}\\
+        9			& Valve				& A mock-up metal valve originally designed for the euRathlon 2015 competition & \ref{md:valve}\\
+        10			& Background		& Anything that is not an object, usually the bottom of our water tank. & N/A\\
+        \hline 
+    \end{tabular} 
+    \vspace*{0.5cm}
+    \caption{Classes Available in the Marine Debris Dataset.}
+    \label{md:classes}
+\end{table*}
+
+\begin{marginfigure}[1cm]
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/hook.jpg}
+    \caption{Sample of Hook Class}
+    \label{md:hook}
+\end{marginfigure}
+
+From the captured raw sonar data, we selected 2069 images, and labeled the objects with bounding boxes and class information for each bounding box. The selection was made in a way to maximize the number of images that we kept, but with the following conditions:
+
+\begin{itemize}
+    \item Objects of interest (marine debris) were present in the image. Images without any objects were discarded.
+    \item At least one marine debris object is clearly recognizable for labeling.
+    \item At least five frames away in time from another previously selected image. This is done to reduce temporal correlation between selected images.
+\end{itemize}
+
+\begin{marginfigure}[-4cm]
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/propeller.jpg}
+    \caption{Sample of Propeller Class}
+    \label{md:propeller}
+\end{marginfigure}
+
+We were not able to label all the objects in each image, as some objects looked blurry and we could not determine its class, but we labeled all the objects where its class can be easy and clearly recognized by the human annotator. In total 2364 objects are annotated in our dataset.
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/shampoo-bottle.jpg}
+    \caption{Sample of Shampoo Bottle Class}
+    \label{md:shampoo-bottle}
+\end{marginfigure}
+
+Most of the objects we used for this dataset did not produce a shadow, depending on the perspective and size of the object. For the purpose of bounding box labeling, we decided to always include the highlight of the object, as it is the most salient feature, but we decided not to include the shadow of most objects in the bounding box, as there is a large variability of the shadow in small objects (sometimes present and sometimes completely absent).
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/scene-sample.jpg}
+    \caption{Example of one Scene Setup for Data Capture}
+    \label{md:scene}
+\end{figure}
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/beer-bottle.jpg}
+    \caption{Sample of Standing Bottle Class}
+    \label{md:standing-bottle}
+\end{marginfigure}
+
+
+For two object classes we always included the shadow, namely the standing bottle and the shampoo bottle, as sometimes the highlight of the object is easily confused with the background, but the shadow should allow for discrimination of this kind of object. The drink carton object is one that many times it had a shadow that we did not label. More detailed image crops of these objects are presented in Appenxix Figures \ref{appendix:standingBottle}, and \ref{appendix:shampooBottle}, and \ref{appendix:drinkCarton}.
+
+We note that this kind of labeling is not the best as there is bias by not always labeling shadows. We made the practical decision of not always including shadows as it made labeling easier, and in the future new labels can be made for this dataset, specially if crowd-sourced labels from several sonar experts can be obtained, like how ImageNet\cite[-5em]{russakovsky2015imagenet} was labeled.
+
+Figure \ref{md:sonar-scenes} shows a selection of sonar images that we captured, with their corresponding bounding box and class annotations. In Figure \ref{md:sonar-object-crops} we show a selection of crops from full-size sonar images, separated per class.  Most labeled sonar images contain only a single object, and some contain multiple objects. Our images show that marine debris is not easy to visually recognize in sonar data, for example, we can only typically see the borders of a bottle, from which the shape is clear but not its contents. The standing bottle can only be recognized by its long shadow that replicated the bottle shape, but the highlight is camouflaged with the background, depending on how the sonar beams hit the object. 
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/tire.jpg}
+    \caption{Sample of Tire Class}
+    \label{md:tire}
+\end{marginfigure}
+
+Figure \ref{md:sonar-scenes} also shows some objects that we did not label, as they are not visually recognizable and look at blurry blobs in the image. This happens because the sonar is not pointing at the "right" angle to see such objects, or because the sonar is slightly higher than needed, producing blurry objects that are not in focus. We can also see the walls of the water tank as very strong reflections of a linear structure.
+
+Figure \ref{md:dataset-histogram} shows the count distribution of the labels in our dataset. It is clearly unbalanced, as we made no effort to make a balanced dataset, and this does not prove to be an issue during learning, as there is no dominant class that would make learning fail.
+
+\begin{marginfigure}
+    \centering
+    \includegraphics[width = 0.85\textwidth]{chapters/images/dataset/valve.jpg}
+    \caption{Sample of Valve Class}
+    \label{md:valve}
+\end{marginfigure}
+
+In the Appendix, Figures \ref{appendix:can} to \ref{appendix:background} show randomly selected image crops of each class, with a variable number depending on the size of the object in order to fill one page. This shows the intra and inter-class variability of our dataset, which is not high, specially for the intra-class variability, due to the low number of object instances that we used.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture} 
+        \begin{axis}[xbar, enlarge y limits=0.05, xlabel={Count}, symbolic y coords={ 
+            Valve, Tire, Standing Bottle, Shampoo Bottle, Propeller, Hook, Drink Carton, Chain, Can, Bottle},
+            ytick=data, nodes near coords, nodes near coords align={horizontal}, height = 0.25\textheight]
+            \addplot coordinates {(449,Bottle) (367,Can) (226,Chain) (349,Drink Carton) (133,Hook)
+                                  (137,Propeller) (99,Shampoo Bottle) (65,Standing Bottle) (331,Tire)
+                                  (208,Valve)};
+         \end{axis}
+     \end{tikzpicture}
+     \caption{Histogram of Samples per Class of the Marine Debris Dataset}
+     \label{md:dataset-histogram}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \subfloat[]{
+        \includegraphics[width=0.45\textwidth]{chapters/images/dataset/failed/2016-06-22_145239-frame00191-cut.jpg}
+    }
+    \subfloat[]{
+        \includegraphics[width=0.45\textwidth]{chapters/images/dataset/failed/2016-06-22_145239-frame00192-cut.jpg}
+    }
+
+    \subfloat[]{
+        \includegraphics[width=0.45\textwidth]{chapters/images/dataset/failed/2016-06-22_145239-frame00193-cut.jpg}
+    }
+    \subfloat[]{
+        \includegraphics[width=0.45\textwidth]{chapters/images/dataset/failed/2016-06-22_145239-frame00194-cut.jpg}
+    }
+    \caption[Selected images showing beam interference producing wrong Sonar images]{Selected images captured in a lake using the ARIS attached to a Sonobot, showing the beam interference that produces wrong Sonar images. The beam pattern can be clearly seen in the image, altering the estimated range of some pixels along the beam, producing a distorted image}
+    \label{md:sonar-beam-interference}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \forcerectofloat
+    \subfloat[Bottles]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-bottles.jpg}
+    }
+    \subfloat[Can]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-can.jpg}    
+    }
+    \subfloat[Chain]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-chain.jpg}
+    }
+
+    \subfloat[Drink Carton]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-drink-carton.jpg}
+    }
+    \subfloat[Hook and Propeller]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-hook-propeller.jpg}    
+    }
+    \subfloat[Shampoo Bottle]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-shampoo-bottle.jpg}
+    }
+
+    \subfloat[Standing Bottle]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-standing-bottle.jpg}    
+    }
+    \subfloat[Tire, Bottle, and Valve]{
+        \includegraphics[height = 0.2\textheight]{chapters/images/dataset/sonar-scene-tire-bottle-valve.jpg}
+    }
+    \caption{Sample Sonar Views of Scenes with Bounding Box Annotations}
+    \label{md:sonar-scenes}
+    \setfloatalignment{b}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \forcerectofloat
+    \subfloat[Bottle]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/bottle-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/bottle-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/bottle-2.jpg}
+    }\hspace*{0.5cm}
+    \subfloat[Can]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/can-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/can-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/can-2.jpg}
+    }
+    
+    \subfloat[Chain]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/chain-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/chain-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/chain-2.jpg}
+    }\hspace*{1.9cm}
+    \subfloat[Drink Carton]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/drinkCarton-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/drinkCarton-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/drinkCarton-2.jpg}
+    }
+
+    \subfloat[Hook]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/hook-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/hook-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/hook-2.jpg}
+    }\hspace*{1.4cm}
+    \subfloat[Propeller]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/propeler-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/propeler-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/propeler-2.jpg}
+    }
+
+    \subfloat[Shampoo Bottle]{
+        \includegraphics[height = 0.044\textheight]{chapters/images/dataset/classes/shampooBottle-0.jpg}
+        \includegraphics[height = 0.044\textheight]{chapters/images/dataset/classes/shampooBottle-1.jpg}
+        \includegraphics[height = 0.044\textheight]{chapters/images/dataset/classes/shampooBottle-2.jpg}
+    }
+
+    \subfloat[Standing Bottle]{
+        \includegraphics[height = 0.0375\textheight]{chapters/images/dataset/classes/standingBottle-0.jpg}
+        \includegraphics[height = 0.0375\textheight]{chapters/images/dataset/classes/standingBottle-1.jpg}
+        \includegraphics[height = 0.0375\textheight]{chapters/images/dataset/classes/standingBottle-2.jpg}
+    }
+
+    \subfloat[Tire]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/tire-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/tire-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/tire-2.jpg}
+    }\hspace*{1.1cm}
+    \subfloat[Valve]{
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/valve-0.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/valve-1.jpg}
+        \includegraphics[height = 0.06\textheight]{chapters/images/dataset/classes/valve-2.jpg}
+    }
+    \vspace*{0.5cm}
+    \caption{Sample Sonar Image Crops from our Dataset, by Class}
+    \label{md:sonar-object-crops}
+    \setfloatalignment{b}
+\end{figure}

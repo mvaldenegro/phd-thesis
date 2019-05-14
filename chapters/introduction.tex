@@ -1,0 +1,249 @@
+\chapter{Introduction}
+\label{chapter:introduction}
+
+Starting with the Industrial Revolution, human populations in every country have continuously been polluting the environment. Such contamination varies from biodegradable human waste to materials that take hundreds of years to degrade, such as plastics, heavy metals, and other processed materials. Virtually all aspects of development in modern times pollute the environment in one way or another.
+
+Human-made pollution is problematic due to the negative effect it has on the environment, as well as on human health. Air and Water pollution are of special interest due to its particular impact in humans and animals. 
+
+Massive efforts are on the way to reduce the impact of modern human life in the environment, like reducing the amount of produced waste, recycling materials that can be reused after some processing, and reusing products that have multiple uses or can have alternate uses. One aspect that has been left out is the collection and capture of existing pollutants in the environment. For example, collecting stray garbage in cities and/or beaches, or recovering spilled oil after a marine disaster. Even after the human race evolves into a state where no contamination is produced from its way of life, cleanup will be a must \cite{mcilgorm2008understanding}.
+
+Robots and Autonomous Vehicles are a natural choice for this task, as it has been depicted in movies (Pixar's Wall-E) and novels. This concept has led to consumer robots like iRobot's Roomba and others, that can regularly clean small apartments with mixed results. We believe this is a worthy application of Robotics that can have massive impact in our lives, if it is implemented in a robust way.
+
+A particular kind of pollution that is not covered by consumer robots and typical policy is marine pollution, specially marine debris. This kind of debris consists of human-made garbage that has found its way into bodies of water. This kind of pollution is usually ignored because it is not easily "seen". Discarding an object into water usually implies that the object sinks and it could be forgotten in the bottom of the water body.
+
+There is an extensive scientific literature\cite{li2016plastic} about describing, locating, and quantifying the amount of marine debris found in the environment. There are reports of human-made discarded objects at up to 4000 meters deep at the coasts of California \cite[1em]{schlining2013debris}, and at more than 10K meters in the Mariana Trench \cite[1em]{chiba2018human}.
+
+During trials at Loch Earn (Scotland, UK) We particularly saw the amount of submerged marine debris in the bottom of this lake. This experience was the initial motivation for this Doctoral research. For an Autonomous Underwater Vehicle, it would be a big challenge to detect and map objects with a large intra and inter-class variability such as marine debris.
+
+This thesis proposes the use of Autonomous Underwater Vehicles to survey and recover/pick-up submerged marine debris from the bottom of a water body. This is an important problem, as we believe that contaminating our natural water sources is not a sustainable way of life, and there is evidence \cite[1em]{iniguez2016marine} that debris is made of materials that pollute and have a negative effect on marine environments \cite[1em]{sheavly2007marine}.
+
+Most research in underwater object detection and classification deals with mine-like objects (MLOs). This bias is also affected by large streams of funding from different military sources around the world. We believe that a much more interesting and challenging problem for underwater perception is to find and map submerged marine debris.
+
+There has been increasing and renewed interest in Neural Networks in the last 5 years\footnote{Since 2012}, producing breakthroughs in different fields related to Artificial Intelligence, such as image recognition, generative modeling, machine translation, etc. This drives us to also evaluate how state of the art neural networks can help us with the problem of detecting marine debris.
+
+This Doctoral Thesis deals with the problem of detecting marine debris in sonar images. This is a challenging problem because of the complex shape of marine debris, and the set of possible objects that we want to detect is open and possibly unbounded.
+
+For the purpose of object detection we use neural networks. This is not a novel application as neural networks have been used for object detection, but they have not been commonly applied in Forward-Looking Sonar images. This poses a different challenge due to the increased noise in the image (compared to color images captured with CCD/CMOS sensors) and the small sample size of the datasets that are typically used in underwater robotics.
+
+We deal with several sub-problems related to the task of marine debris detection in Forward-Looking sonar images, divided into several research lines. This includes image classification, patch matching, detection proposals, end-to-end object detection, and tracking. We also perform fundamental experiments on how these methods behave as we vary the size of the training sets, including generalization on different objects.
+
+While we propose that AUVs can be the solution, we do not deal with the full problem. This thesis only focuses on the perception problem of marine debris, and leaves the manipulation and grasping problem for future work.
+
+\section{Research Questions}
+
+This thesis investigates the following research questions, in the context of submerged marine debris detection in Forward-Looking sonar images.
+
+\begin{itemize}
+	\item \textbf{How can small objects (like marine debris) be detected in underwater environments?}\\
+	Marine debris poses a particular challenge due to viewpoint dependence, complex shape, physical size, and large shape variability. It is not clear a priori which computer vision and machine learning techniques are the best in order to localize such objects in a sonar image.
+	
+	\item \textbf{How can objects be detected in a sonar image with the minimum number of assumptions?}
+	Many object detection techniques make many assumptions on object shape. For example the use of Haar cascades works well for mine-like objects due to the size of their acoustic shadows, but fail when used in shadowless objects like marine debris. A similar argument can be constructed for template matching, which is typically used in sonar images.
+	Reducing the number of implicit or explicit assumptions made by the algorithm will improve its performance on complex objects like marine debris.
+	
+	\item \textbf{How much data is needed to train a large neural network for sonar applications?}
+	Deep Learning has only been made possible due to the availability of large labeled datasets of color images. Predictions cannot be made on how it will perform on sonar images (due to fundamental differences in the image formation process) and on radically smaller datasets that are more common in robotics.
+	End-to-end learning is also problematic in small datasets as the "right" features can only be learned in massive datasets.
+	
+	\item \textbf{Is end-to-end learning possible in sonar images?}
+	End-to-end learning consists of using a neural network to learn a mapping between an input and target labels without performing feature engineering or doing task-specific tuning. As mentioned before, this is problematic on datasets with low sample count and low object variability. We have not previously seen results and/or analysis of end-to-end task learning in sonar images. This will be useful as methods that are developed for one kind of sonar sensor could potentially work without effort on images produced by different sonar devices.
+\end{itemize}
+
+\section{Feasibility Analysis}
+
+This thesis proposes the use of an Autonomous Underwater Vehicles for the purpose of surveying and capturing marine debris lying in the seafloor of a water body. In this subsection we make a short discussion of the operational concept that underpins the research proposal, from a practical point of view.
+
+Our long term vision is that an AUV can be used to both survey and capture marine debris in any kind of underwater environment, like open and deep sea, lakes, river estuaries, swamps, etc.
+
+The amount of marine debris varies with the type of water body. Deep sea usually has sparse samples of marine debris (due to its large size) measured at an average of 0.46 items per km$^2$ (median 0.14, range $[0.0019, 2.34]$, all items per km$^2$)\cite{katsanevakis2008marine}. For shallow coastal areas including river estuaries the average is higher, at 153 items per km$^2$ (median 139, range $[13.7, 320]$, all items per km$^2$) \footnotesize{$^6$}.
+\normalsize
+Land-based marine debris at beaches is highly likely to transfer to the sea. Debris density on beaches is average 2110 items per km$^2$ (median 840, range $[210, 4900]$, all items per km$^2$) \footnotesize{$^6$} \normalsize.
+
+Two use cases for our proposed technology then arise:
+
+\begin{description}
+    \item[Capture of Marine Debris at Deep Sea] Marine debris in this case is sparse, implying that from an economic perspective it might not make much sense to survey and capture marine debris, as most of the seafloor is empty, and little marine debris can be recovered. If previous information (for example, plane wrecks, tsunamis, etc) that marine debris is present in a specific area of the deep sea, then it would be appropriate to use an AUV to recover these pieces of debris. This can be an important application in surveys related to accidents at sea.
+    
+    \item[Capture of Marine Debris in Shallow Coastal Areas] In this case marine debris is quite dense, depending on the specific area to be surveyed. It seems appropriate to recommend an automated solution using an AUV, as there is plenty of marine debris to be found.
+\end{description}
+
+As a simplified model for survey time, if we assume an AUV can move at velocity $V$ (in meters per second) with a sensor that can "see" $S$ meters at a time (related to the swath or range of the sensor), then in order to survey a area $A$ in squaree meters, the AUV will take approximately $T$ seconds, given by:
+
+\begin{equation}
+    T = \frac{A}{V \times S}
+\end{equation}
+
+Note that $S$ might be limited not only by the AUV's maximum speed, but also by the maximum operational speed that the sonar sensor requires (towing speed). For example, some sonar sensors collect information across time (multiple pings) and they might not operate correctly if the vehicle is moving too fast. High speeds might also produce motion blur in the produced images. Maximum towing speeds are also limited by depth range.
+
+A typical value is $S = 2$ meters per second, which is limited by drag forces and energy efficiency \cite{fossen2011handbook}. Assuming $A = 1000000$ m$^2$ (one squared kilometer), then we can evaluate the required survey time as a function of the sensor range/swath $S$, shown in Figure \ref{intro:rangeVsTime}. For $S = 10$ m, 13.8 hrs are required, and this value drops to 42 minutes with $S = 200$ m.
+
+\begin{marginfigure}
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[domain=10:200, width=1.1\textwidth, xmin = 10, xmax = 200, tick label style={font=\scriptsize}, xlabel = {S [M]}, ylabel={T [Mins]}, ytick={900,700,500,300,100}, ymajorgrids=true, grid style=dashed,
+    xtick={10,50,100,150,200}]
+    \addplot+[mark=none, color=darkgray] {1000000/(2 * x * 60)};    
+    \end{axis}
+    \end{tikzpicture}
+    \caption[Survey time in minutes as function of sensor range]{Survey time in minutes as function of sensor range for a 1 km$^2$ patch and $V=2$ m/s}
+    \label{intro:rangeVsTime}
+\end{marginfigure}
+
+Assuming that there are $N$ marine debris elements in the seafloor per square kilometer, then every $\frac{T}{N}$ seconds a piece of marine debris will be found.
+
+As mentioned before, for a shallow coastal area $N \in [13.7, 320]$, and taking $T = 42 \times 60$ s, this implies that $\frac{T}{N}$ is in the range $[7.8, 184.0]$ seconds. The lower bound implies that for the most dense debris distribution, one piece will be found every $8$ seconds. This motivates a real-time computational implementation, where processing one frame should at most take approximately one second. This requirement also depends on the sensor, as Forward-Looking sonars can provide data at up to 15 frames per second, also requiring a real-time perception implementation, up to $\frac{1}{15} = \sim 66.6$ milliseconds per frame.
+
+For the marine debris use case, there are three important parameters to select an appropriate sonar sensor: the per-pixel spatial resolution, the maximum range, and the power usage. Marine debris objects can be quite small (less than 10 cm), so the highest spatial resolution is required. The maximum range ($S$) defines how many passes have to be performed to fully cover the desired environment. Power usage constrains the maximum battery for the AUV before needing to recharge.
+
+To select these parameters, we made a short survey if different sonar sensing systems, available in Table \ref{intro:sonar-survey}. We considered three major kinds of sonars: Forward-Looking, Sidescan, and Synthetic Aperture. We only considered sensors that are appropriate as AUV payload, where the manufacturer provided all three previously mentioned parameters that we evaluate.
+
+The longest AUVs can operate up to 20 hrs while performing seafloor mapping with a 2000 Watt-Hour battery \cite{kirkwood2007development}. Assuming this kind of battery, an AUV has enough power for several hours of endurance with an active sensor, but this varies as more power hungry sensors will deplete battery power faster. This relationship is shown in Figure \ref{intro:powerVsBatteryLife}. With the ARIS Explorer 3000 we can expect at most $33-125$ Hours of life, while with a more power consuming Kraken Aquapix SAS we can expect $14-15$ Hours. This calculation does not include power consumption by other subsystems of the AUV, such as propulsion, control, perception processing, and autonomy, so we can take them as strict maximums in the best case.
+
+\begin{marginfigure}
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[domain=6:145, restrict y to domain=1:350, width=1.1\textwidth, xmin = 6, xmax = 145, tick label style={font=\scriptsize}, xlabel = {Sensor Power [W]}, ylabel={Battery Life [Hrs]}, xtick={6,25,50,100,145},ytick={10,50,100,200,300}, ymajorgrids=true, grid style=dashed]
+    \addplot+[mark=none, color=darkgray] {2000/x};    
+    \end{axis}
+    \end{tikzpicture}
+    \caption[Battery life as function of sensor power requirement]{Battery life as function of sensor power requirement for a 2000 Watt-Hour battery}
+    \label{intro:powerVsBatteryLife}
+\end{marginfigure}
+
+Since the ARIS Explorer 3000 has an approximate value $S = 10$ meters, surveying one km$^2$ will take 13.8 Hours. In the best possible case, $2.4-9$ km$^2$ of surface can be surveyed with a single battery charge. For the Kraken Aquapix SAS, which has $S = 200$ meters (approximately), surveying the one km$^2$ will take $0.7$ Hours, so with the available battery life, up to $20-21.4$ km$^2$ of surface can be surveyed with a single battery charge. This value is considerable better than the one for the ARIS.
+
+To detect marine debris, we wish for the largest sensor resolution, ideally less than one centimeter per pixel, as marine debris elements are physically small ($< 10$ centimeters). Using a sensor with low resolution risks missing marine debris targets as they will be represented by less pixels in the output image, making classification and detection difficult. A higher resolution might also imply a high power consumption, as an active sensor will need a powerful signal to distinguish object from seafloor noise.
+
+\begin{table*}[t]
+    \centering
+    \forcerectofloat
+    \begin{tabular}{lllll}
+        \hline 
+        Type 		& Brand/Model Example	& Spatial Resolution 	& Max Range & Power \\ 
+        \hline 
+        FLS 	& ARIS Explorer		 	& $\sim 0.3$ cm/pix 		& 5-15 M 	& 16-60 W \\ 
+                & Blueview M900-2250	& $\sim 0.6-1.3$ cm/pix		& 100 M 	& 20-26 W\\	
+                & Blueview P900 Series	& $\sim 2.54$ cm/pix		& 100 M 	& 9-23 W\\
+        \hline
+        SS		& Tritech Starfish 		& $\sim 2.5-5$ cm/pix 		& 35-100 M 	& 6-12 W \\ 
+                & Klein UUV-3500		& $\sim 2.4-4.8$ cm/pix		& 75-150 M 	& 18-30 W\\
+                & Sonardyne Solstice	& $\sim 2.5-5$ cm/pix		& 200M 		& 18 W\\
+        \hline
+        SAS		& Kraken Aquapix		& $\sim 1.5-3.0$ cm/pixel	& 120-220 M & 130-145 W\\
+                & Kongsberg HISAS 1030	& $< 5.0$ cm/pixel			& 200-260 M	& 100 W\\
+                & Atlas Elektronik Vision 600 & $\sim 2.5$ cm/pixel	& 100 M 	& 100 W\\
+        \hline
+    \end{tabular}
+    \caption[Survey of AUV Sonar Sensors across different manufacturers]{Survey of AUV Sonar Sensors across different manufacturers. We show Forward-Looking Sonars (FLS), Sidescan Sonars (SS), and Synthetic Aperture Sonars (SAS). Important parameters for our use case are the per-pixel spatial resolution (in centimeters), the maximum range (in meters), and power requirements (in watts).}
+    \label{intro:sonar-survey}
+    \vspace*{0.5cm}
+\end{table*}
+
+It is also important to mention that there is a trade-off between the frequency of the sound waves and the maximum range allowable for the sensor \cite[5em]{hansen2009introduction}. The amount of attenuation in water increases with the frequency of the sound wave, while a high frequency signal allows for more detail to be sensed from the environment. This effectively means that in order to sense marine debris, a high frequency sonar is required (such as the ARIS Explorer 300 at 1.8 MHz), but this limits the range that the sensor can see at a time, increasing the amount of time required to survey an area, as computed before.
+
+The ARIS Explorer 3000 has a resolution of 0.3 cm per pixel, allowing it to see small objects easily. This value is $5-10$ times better than the best Sidescan or Synthetic Aperture sonar in our survey, indicating that the ARIS might be the best choice to detect marine debris in underwater environments.
+
+We believe that Sidescan and Synthetic Aperture sonars are still useful for marine debris detection. For example, they can be used to quickly survey a large area of the seafloor, and to identify areas where marine debris might concentrate, and then use this information to direct an AUV using a high resolution sensor (like the ARIS) for a detailed survey of this area.
+
+There are other possible use cases. In the case of surveying, a robot can more quickly detect areas of possible marine debris contamination at a large scale, and then direct human intervention, for example, with divers that can recover marine debris, or just by providing additional information over time, to locate sources of marine pollution. This would be useful for local authorities in coastal areas that wish to provide close monitoring of their shores.
+
+We believe that possible users for this proposed technology are: governments and agencies interested in marine environments, specially in coastal areas, rivers, and lakes. Private companies that need marine debris mitigation, as well as ports and maritime commercial facilities, as these usually have large environmental impacts that include marine debris.
+
+We note that the most feasible use of this proposed technology is on coastal areas close to shore, as the density of marine debris is higher. Open seas usually has a lower density of marine debris, and it is much larger in area, making debris location much more sparse, which reduces the technical feasibility of this solution, as an AUV would have to cooperate with a mother ship to provide energy recharges.
+
+The marine debris task does not have widely known performance metrics \cite{sheavly2007marine}. Generally when using machine learning techniques, we wish to predict performance in unseen data, which is not trivial. For the object detection task, we need to predict how many debris objects can be successfully detected by our algorithms, but we also wish to produce an algorithm that maximizes the number of detected debris objects. This motivates the use of recall, as a false positive is not as troubling as missing one piece of marine debris in the seafloor. For classification tasks, we use accuracy as a proxy metric.
+
+Our simplified analysis shows that the proposed technique is feasible, at least from an operational point of view, mostly for coastal areas, and not for open seas.
+
+\section{Scope}
+
+The thesis scope is limited by the following:
+
+\begin{itemize}
+    \item We only deal with the research problem of perception of marine debris in Forward-Looking Sonar images, leaving manipulation (picking) of marine debris as future work. This is mostly a pragmatic decision as manipulation in underwater environments is a harder problem \cite{ridao2014intervention}.
+    \item The dataset used for training and evaluation of various techniques was captured in a water tank with a selection of marine debris and distractor objects. For marine debris we used household objects (bottles, cans, etc), and for distractors we selected a hook, an underwater valve, a tire, etc. The dataset is not intended to absolutely represent a real world underwater scenario. This selection is motivated by issues we had with the sonar system while trialing at lakes and rivers.
+    \item We only consider submerged marine debris that is resting in the water body floor.
+    \item Regarding sensing systems, we only use a high resolution Forward-Looking Sonar (Soundmetrics' ARIS Explorer 3000), and do not consider other kinds such as synthetic aperture or sidescan sonars.
+\end{itemize}
+
+\section{Thesis Structure}
+
+Chapter \ref{chapter:motivation} describes the problem of submerged and floating marine debris in ocean and rivers in detail. From this we make the scientific proposal that Autonomous Underwater Vehicles can help to clean the environment.
+
+We provide a technical introduction to basic Machine Learning and Neural Network techniques in Chapter \ref{chapter:background}, with a focus on practical issues that most textbooks do not cover.
+
+Chapter \ref{chapter:sonar-classification} is the first technical chapter of this thesis. We deal with the sonar image classification problem, and show that neural networks can perform better than state of the art approaches, and even be usable in low power platforms such as AUVs.
+
+In Chapter \ref{chapter:limits} we use an experimental approach to explore the practical limits of Convolutional Neural Networks, focusing on how the image size and training set size affect prediction performance. We also evaluate the use of transfer learning in sonar images.
+
+Chapter \ref{chapter:matching} uses CNNs to match pairs of sonar image patches. We find this is a difficult problem, and state of the art solutions from Computer Vision perform poorly on sonar images, but Neural Networks can provide a good solution that generalizes well to different objects.
+
+Chapter \ref{chapter:proposals} is the core of this thesis, where we use detection proposals to detect any kind of object in a sonar image, without considering the object class. We propose a Neural Network that outputs an objectness score from a single scale image, which can be used to generate detections on any kind of object and generalizes well outside its training set.
+
+In Chapter \ref{chapter:applications} we show two applications of detection proposals. The first is end-to-end object detection of marine debris in sonar images, and the second being object tracking using proposals and a matching CNN. We show that in both cases our approaches work better than template matching ones, typically used in sonar images.
+
+Finally in Chapter \ref{chapter:conclusions} this thesis is closed with a set of conclusions and future work.
+
+\section{Software Implementations}
+
+We used many third party open source implementation of common algorithms. For general neural network modeling we used Keras \footnote{Available at \url{https://github.com/keras-team/keras}} (version 1.2.2), with the Theano \footnote[][1em]{Available at \url{https://github.com/Theano/Theano}} backend (version 0.8.2).
+
+Many common machine learning algorithms (SVM, Random Forest, Gradient Boosting), evaluation metrics (Area under the ROC Curve), and dimensionality reduction techniques (t-SNE and Multi-Dimensional Scaling) come from the scikit-learn library\footnote{Available from \url{https://github.com/scikit-learn/scikit-learn}} (version 0.16.1).
+
+We used the SIFT, SURF, AKAZE, and ORB implementations from the OpenCV library \footnote{Available at \url{https://github.com/opencv/opencv}} (version 3.2.0).
+
+In terms of hardware, many neural networks are small enough to train on a CPU, but in order to speedup evaluation of multiple neural networks, we used a NVIDIA GTX 1060 with 6 GB of VRAM. GPU acceleration was implemented through CUDA (version 8.0.61, used by Theano) and the CuDNN library (version 6.0.21) for GPU acceleration of neural network primitives.
+
+\section{Contributions}
+
+This Doctoral Thesis has the following contributions:
+
+\begin{itemize}
+    \item We captured a dataset of $\sim 2000$ marine debris sonar images with bounding box annotations using an ARIS Explorer 300 Forward-Looking Sonar. The images contain a selected a subset of household and typical marine objects as representative targets of marine debris. We use this dataset to evaluate different techniques in the contest of the Marine Debris detection task. We plan to release this dataset to the community through a journal paper.
+    
+	\item We show that in our FLS Marine Debris dataset, a deep neural network can outperform cross-correlation\cite{hurtos2013automatic} and sum of squared differences template matching algorithms in Forward-Looking sonar image classification of Marine Debris objects.
+	\item We propose the use of sum of squared differences similarity for sonar image template matching, which outperforms the cross-correlation similarity in our dataset of FLS Marine Debris images.
+	\item We shown that a deep neural network trained for FLS classification can generalize better than other techniques with less number of data points and using less trainable parameters, as evaluated on our FLS Marine Debris images.
+    
+    \item We show that specially designed deep neural network based on the Fire module\cite{iandola2016squeezenet} allows for a model with low number of parameters and similar classification accuracy than a bigger model, losing only $0.5 \%$ accuracy on the FLS Marine Debris dataset.
+    
+    \item We demonstrate that our small FLS classification model can efficiently run on a Raspberry Pi 2 at 25 frames per second due to the reduction in parameters and required computation, indicating that it is a good candidate to be used in real-time applications under resource constrained platforms.
+    
+	\item We evaluate our neural network models with respect to the training set size, measured as the number of samples per class, on the FLS Marine Debris dataset. We find out that these models do not need a large dataset to generalize well.
+	\item We evaluate the effect of varying the training and transfer set sizes on feature learning classification performance, on the FLS Marine Debris dataset. We find out that convolutional feature learning on FLS images works well even with small dataset sizes, and this holds even when both datasets do not have object classes in common. These results suggest that learning FLS classifiers from small datasets with high accuracy is possible if features are first learned on a different FLS dataset.
+    
+	\item We propose the use of a two image input neural network to match FLS image patches. On the FLS Marine Debris dataset, this technique is superior to state of the art keypoint detection methods\cite{rublee2011orb} and shallow machine learning models, as measured by the Area under the ROC Curve. This result also holds when training and testing sets do not share objects, indicating good generalization.
+    
+	\item We propose a simple algorithm to automatically produce objectness labels from bounding box data, and we use a neural network to predict objectness from FLS image patches. We use this model to produce detection proposals on a FLS image that generalize well both in unlabeled objects in our FLS Marine Debris dataset and in out of sample test data.
+    \item We show that our detection proposal techniques using objectness from FLS images can obtain a higher recall than state of the art algorithms (EdgeBoxes\cite[-8em]{zitnick2014edge} and Selective Search\cite[-2em]{uijlings2013selective}) on the FLS Marine Debris dataset, while requiring less detections per image, which indicates that is more useful in practice.
+	\item We show that our detection proposals can be combined with a neural network classifier to build an end-to-end object detector with good performance on the FLS Marine Debris dataset. Our detection proposals can also be combined with our patch matching network to built a simple tracking algorithm that works well in the same dataset.
+    
+	\item Finally we show that end-to-end learning works well to learn tasks like object detection and patch matching, on the FLS Marine Debris dataset, improving the state of the art and potentially being useful for other sonar sensor devices (like sidescan or synthetic aperture sonar), as we do not make modeling assumptions on sensor characteristics.
+\end{itemize}
+
+\section{Related Publications}
+
+This thesis is based in the following papers published by the author:
+
+\begin{itemize}
+	\item \textit{Object Recognition in Forward-Looking Sonar Images with Convolutional Neural Networks}
+	Presented at Oceans'16 Monterey. These results are extended in Chapter \ref{chapter:sonar-classification}.
+	
+	\item \textit{End-to-end Object Detection and Recognition in Forward-Looking Sonar Images with Convolutional Neural Networks} Presented at the IEEE Workshop on Autonomous Underwater Vehicles 2016 in Tokyo. We show these results in Chapter \ref{chapter:applications}.
+	
+	\item \textit{Objectness Scoring and Detection Proposals in Forward-Looking Sonar Images with Convolutional Neural Networks}
+	Presented at the IAPR Workshop on Neural Networks for Pattern Recogntion 2016 in Ulm. This paper is the base for Chapter \ref{chapter:proposals} and we massively extend our results. This is also used in Chapter \ref{chapter:applications}.
+	
+	\item \textit{Submerged Marine Debris Detection with Autonomous Underwater Vehicles}
+	Presented in the International Conference on Robotics and Automation for Humanitarian Applications 2016 in Kerala. This paper was our original inspiration for Chapter \ref{chapter:applications} as well as the motivation of detecting marine debris.
+	
+	\item \textit{Real-time convolutional networks for sonar image classification in 
+	low-power embedded systems}
+	Presented in the European Symposium on Artificial Neural Networks (ESANN) 2017 in Bruges. These results are extended in Chapter \ref{chapter:sonar-classification}.
+	
+	\item \textit{Best Practices in {C}onvolutional {N}etworks for {F}orward-{L}ooking {S}onar {I}mage {R}ecognition}
+	Presented in Oceans'17 Aberdeen. These results are the base for Chapter \ref{chapter:limits} where we also present extended versions.
+	
+	\item \textit{{I}mproving {S}onar {I}mage {P}atch {M}atching via {D}eep {L}earning}
+	Presented at the European Conference on Mobile Robotics 2016 in Paris. This is the base for Chapter \ref{chapter:matching}, where we extends those results.
+\end{itemize}

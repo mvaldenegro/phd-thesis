@@ -1,0 +1,549 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tufte-Style Book (Documentation Template)
+% LaTeX Template
+% Version 1.0 (5/1/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% The Tufte-LaTeX Developers (tufte-latex.googlecode.com)
+%
+% License:
+% Apache License (Version 2.0)
+%
+% IMPORTANT NOTE:
+% In addition to running BibTeX to compile the reference list from the .bib
+% file, you will need to run MakeIndex to compile the index at the end of the
+% document.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper, notoc, oneside, openany]{tufte-book} % Use the tufte-book class which in turn uses the tufte-common class
+
+%To fix issues with margin stuff in the wrong side
+\usepackage{mparhack}
+
+%To debug margin issues
+%\usepackage{showframe}
+
+\usepackage[utf8]{inputenc}
+\usepackage[caption=false]{subfig}
+
+%Justification
+\usepackage{ragged2e}
+
+%HWU Thesis Margins
+\geometry{
+    left=40mm, % left margin
+    %textwidth=100mm, % main text block
+    top=20mm,
+    bottom=20mm,
+    right=65mm,
+    marginparsep=5mm, % gutter between main text block and margin notes
+    marginparwidth=40mm, % width of margin notes,
+    footskip=10mm
+}
+
+%HWU format: Footer page numbers should be centered
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancypagestyle{mainmatter}{    
+    \fancyfoot{}
+    \fancyfoot[C]{ \centering \thepage }
+}
+
+% Redefine the plain page style
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyfoot{}
+    \fancyfoot[C]{ \centering \thepage }%
+}
+
+%Nice chapter headers
+\titleformat{\chapter}[block]
+{\huge\rmfamily\color{darkgray}}% format applied to label+text
+{\colorbox{black}{\parbox{1.5cm}{\hfill\huge\color{white}\thechapter}}}% label
+{5pt}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body  
+
+\titleformat{\section}%
+{\Large\rmfamily\color{darkgray}}% format applied to label+text
+{\colorbox{darkgray}{\parbox{1.5cm}{\hfill\Large\color{white}\thesection}}}% label
+{5pt}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+\titleformat{\subsection}%
+{\Large\rmfamily\color{darkgray}}% format applied to label+text
+{\colorbox{gray}{\parbox{2.0cm}{\hfill\Large{\color{white}\thesubsection}}}}% label
+{5pt}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+%To include declaration page
+\usepackage{pdfpages}
+
+%Math stuff
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\usepackage{longtable}
+
+%\hypersetup{colorlinks, linktoc=all} % Comment this line if you don't wish to have colored links
+
+\usepackage{microtype} % Improves character and word spacing
+\usepackage{lipsum} % Inserts dummy text
+\usepackage{booktabs} % Better horizontal rules in tables
+
+\usepackage{multirow}
+
+\usepackage{graphicx} % Needed to insert images into the document
+%\graphicspath{{graphics/}} % Sets the default location of pictures
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio} % Improves figure scaling
+
+\usepackage{fancyvrb} % Allows customization of verbatim environments
+\fvset{fontsize=\normalsize} % The font size of all verbatim text can be changed here
+
+\usepackage{tikz, pgfplots, pgfplotstable}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usepgflibrary{fpu}
+
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{fillbetween}
+\usepgfplotslibrary{colorbrewer}
+
+\usetikzlibrary{external}
+\tikzexternalize[prefix=tikz-generated/]
+\pgfplotsset{compat=newest}
+
+%Error bars command
+\newcommand{\errorband}[6]{
+	\pgfplotstableread{#1}\datatable
+	\addplot [name path=pluserror,draw=none,no markers,forget plot]
+	table [x={#2},y expr=\thisrow{#3}+\thisrow{#4} / 2] {\datatable};
+	
+	\addplot [name path=minuserror,draw=none,no markers,forget plot]
+	table [x={#2},y expr=\thisrow{#3}-\thisrow{#4} / 2] {\datatable};
+	
+	\addplot [forget plot,fill=#5,opacity=#6]
+	fill between[on layer={},of=pluserror and minuserror];
+	
+	\addplot [#5,thick,no markers]
+	table [x={#2},y={#3}] {\datatable};
+}
+
+%Environment for a legend only plot
+% argument #1: any options
+\newenvironment{customlegend}[1][]{%
+	\begingroup
+	% inits/clears the lists (which might be populated from previous
+	% axes):
+	\pgfplots@init@cleared@structures
+	\pgfplotsset{#1}%
+}{%
+	% draws the legend:
+	\pgfplots@createlegend
+	\endgroup
+}%
+
+\def\addlegendimage{\pgfplots@addlegendimage}
+
+% turn on numbering for parts, chapters, sections, and subsections
+\setcounter{secnumdepth}{2}
+
+%Nice looking tables
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.2}
+
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}} % New command to create parentheses around text in tables which take up no horizontal space - this improves column spacing
+\newcommand{\hangstar}{\makebox[0pt][l]{*}} % New command to create asterisks in tables which take up no horizontal space - this improves column spacing
+
+\usepackage{xspace} % Used for printing a trailing space better than using a tilde (~) using the \xspace command
+
+\newcommand{\monthyear}{\ifcase\month\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\fi\space\number\year} % A command to print the current month and year
+
+\newcommand{\openepigraph}[2]{ % This block sets up a command for printing an epigraph with 2 arguments - the quote and the author
+\begin{fullwidth}
+\sffamily\large
+\begin{doublespace}
+\noindent\allcaps{#1}\\ % The quote
+\noindent\allcaps{#2} % The author
+\end{doublespace}
+\end{fullwidth}
+}
+
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage} % Command to insert a blank page
+
+\usepackage{units} % Used for printing standard units
+
+\newcommand{\hlred}[1]{\textcolor{Maroon}{#1}} % Print text in maroon
+\newcommand{\hangleft}[1]{\makebox[0pt][r]{#1}} % Used for printing commands in the index, moves the slash left so the command name aligns with the rest of the text in the index 
+\newcommand{\hairsp}{\hspace{1pt}} % Command to print a very short space
+\newcommand{\ie}{\textit{i.\hairsp{}e.}\xspace} % Command to print i.e.
+\newcommand{\eg}{\textit{e.\hairsp{}g.}\xspace} % Command to print e.g.
+\newcommand{\na}{\quad--} % Used in tables for N/A cells
+\newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}} % Typesets the font size, leading, and measure in the form of: 10/12x26 pc.
+\newcommand{\tuftebs}{\symbol{'134}} % Command to print a backslash in tt type in OT1/T1
+
+\providecommand{\XeLaTeX}{X\lower.5ex\hbox{\kern-0.15em\reflectbox{E}}\kern-0.1em\LaTeX}
+\newcommand{\tXeLaTeX}{\XeLaTeX\index{XeLaTeX@\protect\XeLaTeX}} % Command to print the XeLaTeX logo while simultaneously adding the position to the index
+
+\newcommand{\doccmdnoindex}[2][]{\texttt{\tuftebs#2}} % Command to print a command in texttt with a backslash of tt type without inserting the command into the index
+
+\newcommand{\doccmddef}[2][]{\hlred{\texttt{\tuftebs#2}}\label{cmd:#2}\ifthenelse{\isempty{#1}} % Command to define a command in red and add it to the index
+{ % If no package is specified, add the command to the index
+\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% Command name
+}
+{ % If a package is also specified as a second argument, add the command and package to the index
+\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% Command name
+\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% Package name
+}}
+
+\newcommand{\doccmd}[2][]{% Command to define a command and add it to the index
+\texttt{\tuftebs#2}%
+\ifthenelse{\isempty{#1}}% If no package is specified, add the command to the index
+{%
+\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% Command name
+}
+{%
+\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% Command name
+\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% Package name
+}}
+
+% A bunch of new commands to print commands, arguments, environments, classes, etc within the text using the correct formatting
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}
+\newenvironment{docspec}{\begin{quotation}\ttfamily\parskip0pt\parindent0pt\ignorespaces}{\end{quotation}}
+\newcommand{\docenv}[1]{\texttt{#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}
+\newcommand{\docenvdef}[1]{\hlred{\texttt{#1}}\label{env:#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}
+\newcommand{\docpkg}[1]{\texttt{#1}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}
+\newcommand{\doccls}[1]{\texttt{#1}}
+\newcommand{\docclsopt}[1]{\texttt{#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}
+\newcommand{\docclsoptdef}[1]{\hlred{\texttt{#1}}\label{clsopt:#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}
+\newcommand{\docmsg}[2]{\bigskip\begin{fullwidth}\noindent\ttfamily#1\end{fullwidth}\medskip\par\noindent#2}
+\newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
+\newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
+
+\usepackage{makeidx} % Used to generate the index
+\makeindex % Generate the index which is printed at the end of the document
+
+% This block contains a number of shortcuts used throughout the book
+\newcommand{\vdqi}{\textit{VDQI}\xspace}
+\newcommand{\ei}{\textit{EI}\xspace}
+\newcommand{\ve}{\textit{VE}\xspace}
+\newcommand{\be}{\textit{BE}\xspace}
+\newcommand{\VDQI}{\textit{The Visual Display of Quantitative Information}\xspace}
+\newcommand{\EI}{\textit{Envisioning Information}\xspace}
+\newcommand{\VE}{\textit{Visual Explanations}\xspace}
+\newcommand{\BE}{\textit{Beautiful Evidence}\xspace}
+\newcommand{\TL}{Tufte-\LaTeX\xspace}
+
+\graphicspath{{chapters/images/}}
+
+\usepackage{stackengine}
+
+%Less space above and below equations
+\g@addto@macro\normalsize{%
+    \setlength\abovedisplayskip{-3.5pt}
+    \setlength\belowdisplayskip{2.5pt}
+    \setlength\abovedisplayshortskip{-3.5pt}
+    \setlength\belowdisplayshortskip{2.5pt}
+}
+
+%To control page numbers in some pages
+\makeatletter
+\newcommand{\emptypage}[1]{%
+    \cleardoublepage
+    \begingroup
+    \let\ps@plain\ps@empty
+    \pagestyle{empty}
+    #1
+    \cleardoublepage}
+\makeatletter
+
+%For appendices
+\usepackage{appendix}
+
+% Normal LOF and LOTs
+\renewcommand*\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
+\renewcommand*\l@table{\@dottedtocline{1}{1.5em}{2.3em}}
+
+%----------------------------------------------------------------------------------------
+%	BOOK META-INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title[DNNs for Marine Debris Detection in Sonar Images]{Deep Neural Networks for Marine Debris Detection in Sonar Images}
+
+\author{Matias A. Valdenegro Toro} % Author
+
+\publisher{Thesis submitted for the degree of\\Doctor of Philosophy in Electrical Engineering} % Publisher
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\frontmatter
+
+%----------------------------------------------------------------------------------------
+%	EPIGRAPH
+%----------------------------------------------------------------------------------------
+
+%\thispagestyle{empty}
+%\openepigraph{We stand on the shoulders of giants}{Isaac Newton}
+%\vfill
+%\openepigraph{A designer knows that he has achieved perfection not when there is nothing left to add, but when there is nothing left to take away.}{Antoine de Saint-Exup\'{e}ry}
+%\vfill
+%\openepigraph{\ldots the designer of a new system must not only be the implementor and the first large-scale user; the designer should also write the first user manual\ldots If I had not participated fully in all these activities, literally hundreds of improvements would never have been made, because I would never have thought of them or perceived why they were important.}{Donald E. Knuth}
+
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+
+%\maketitle % Print the title page
+\cleardoublepage%
+{%
+    \begin{fullwidth}%
+        \vspace*{3cm}%
+        \fontsize{30}{32}\selectfont\textcolor{darkgray}{
+            \centering
+            \flushleft
+            \hspace*{0.15\textwidth}Deep Neural Networks\\
+            \hspace*{0.15\textwidth}For Marine Debris Detection\\
+            \hspace*{0.15\textwidth}In Sonar Images\\            
+        }%
+        \sffamily%
+        \vspace*{2cm}%
+        \fontsize{18}{20}\selectfont\par\noindent\textcolor{darkgray}{
+            \flushleft
+            \hspace*{0.3\textwidth}Matias Alejandro\\
+            \hspace*{0.3\textwidth}Valdenegro Toro, M.Sc., B.Sc.\\
+            \vspace*{1cm}
+            \hspace*{0.3\textwidth}April 2019.\\
+        }%
+        \vspace*{4.5cm}
+        \fontsize{18}{20}\selectfont\par\noindent{
+            \flushleft
+            Dissertation submitted for the degree of\\ Doctor of Philosophy in Electrical Engineering.\\
+            \vspace*{0.5cm}
+            Heriot-Watt University, Edinburgh, Scotland.
+        }
+        \vfill
+        \fontsize{14}{16}\selectfont\par\noindent{
+            \flushleft
+            The copyright in this thesis is owned by the author. Any quotation from the thesis 
+            or use of any of the information contained in it must acknowledge this thesis as the source of the quotation or information.\\
+        }%
+    \end{fullwidth}%
+}
+\thispagestyle{empty}%
+\clearpage%
+
+
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+\begin{fullwidth}
+~\vfill
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+Copyright \copyright\ 2018 - 2019 Matias Alejandro Valdenegro Toro.
+
+\par\smallcaps{Latex Template based on \url{https://github.com/Tufte-LaTeX/tufte-latex}, which is Licensed under the Apache License, Version 2.0.}
+
+\par\textit{Final version, arXiv release, April 2019. Compiled on \today.}
+\end{fullwidth}
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+\justifying
+\cleardoublepage
+\chapter{Abstract}
+\thispagestyle{empty}
+Garbage and waste disposal is one of the biggest challenges currently faced by mankind. Proper waste disposal and recycling is a must in any sustainable community, and in many coastal areas there is significant water pollution in the form of floating or submerged garbage. This is called marine debris.
+
+It is estimated that 6.4 million tonnes of marine debris enter water environments every year \textit{[McIlgorm et al. 2008, APEC Marine Resource Conservation WG]}, with 8 million items entering each day. An unknown fraction of this sinks to the bottom of water bodies. Submerged marine debris threatens marine life, and for shallow coastal areas, it can also threaten fishing vessels \textit{[I{\~n}iguez et al. 2016, Renewable and Sustainable Energy Reviews]}.
+
+Submerged marine debris typically stays in the environment for a long time (20+ years), and consists of materials that can be recycled, such as metals, plastics, glass, etc. Many of these items should not be disposed in water bodies as this has a negative effect in the environment and human health. 
+
+Encouraged by the advances in Computer Vision from the use Deep Learning, we propose the use of Deep Neural Networks (DNNs) to survey and detect marine debris in the bottom of water bodies (seafloor, lake and river beds) from Forward-Looking Sonar (FLS) images.
+
+This thesis performs a comprehensive evaluation on the use of DNNs for the problem of marine debris detection in FLS images, as well as related problems such as image classification, matching, and detection proposals. We do this in a dataset of 2069 FLS images that we captured with an ARIS Explorer 3000 sensor on marine debris objects lying in the floor of a small water tank. We had issues with the sensor in a real world underwater environment that motivated the use of a water tank.
+
+The objects we used to produce this dataset contain typical household marine debris and distractor marine objects (tires, hooks, valves, etc), divided in 10 classes plus a background class.
+
+Our results show that for the evaluated tasks, DNNs are a superior technique than the corresponding state of the art. There are large gains particularly for the matching and detection proposal tasks. We also study the effect of sample complexity and object size in many tasks, which is valuable information for practitioners.
+
+We expect that our results will advance the objective of using Autonomous Underwater Vehicles to automatically survey, detect and collect marine debris from underwater environments. 
+
+%----------------------------------------------------------------------------------------
+%	DEDICATION PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+\begin{flushright}
+\noindent\fontsize{14}{18}\selectfont
+Do not be sorry. Be better...\\ And you must be better than me...\\
+\smallcaps{Kratos - God of War (SIEE, 2018)}\\
+\vspace*{1cm}
+Hope is what makes us strong.\\ It is why we are here.\\ It is what we fight with when all else is lost...\\
+\smallcaps{Pandora - God of War 3 (SCEE, 2010)}
+\end{flushright}
+~\vfill
+\begin{doublespace}
+\thispagestyle{empty}
+\noindent\fontsize{18}{22}\selectfont\itshape
+\nohyphenation
+Dedicada a mis queridos Abuelos: Paulina, Rubén, y Sergio.
+\end{doublespace}
+\vfill
+\vfill
+
+\chapter{Acknowledgements}
+\thispagestyle{empty}
+Many people have contributed or helped in the development of my Doctoral research. First I would like to thank the European Commission for funding my research through the FP7-PEOPLE-2013-ITN project ROBOCADEMY (Ref 608096). The project also supported me during my research visit to the German Research Center for Artificial Intelligence in Bremen, where I currently work. For this I acknowledge the support of Prof. David Lane, Lynn Smith, and Prof. Yvan Petillot during my PhD.
+
+Acknowledging the support of the European Union is a must in the uncertain times during which this thesis was written. People have to know that the European Union is a project worth pursuing.\\
+
+This vital funding through the Marie-Skłodowskca Curie Actions (MSCA) allowed me to freely develop my scientific ideas and steer the project into a direction I believe is positive for the environment and common good. Science must always be performed for the benefit of humankind and our planet. 
+
+Leonard McLean at the Ocean Systems Lab provided key technical support in experimental setup and data capture. My Best Friend Polett Escanilla supported me during good and bad times. The Hochschule Bonn-Rhein-Sieg (Sankt Augustin, Germany) allowed me to advise their students in R\&D/Master Thesis projects for the MAS program, which gave me vital experience in advising and mentoring people. Prof. Dr. Paul Plöger, Iman Awaad, Anastassia Küstenmacher, Maria do Carmo Massoni, Kira Wazinsky, Miriam Lüdtke-Handjery, and Barbara Wieners-Horst from the previously mentioned institution provided key support after my time in Sankt Augustin and during my PhD when visiting the University.\\
+
+The Hochschule Bonn-Rhein-Sieg was created as compensation to Bonn for the move of Germany's capital to Berlin after reunification, which makes me feel a special bond and debt to Germany. It was in this city that life-long friendships with Octavio Arriaga, Maryam Matin, and Nour Soufi, began.\\
+
+Elizabeth Vargas provided invaluable support and physically delivered this thesis to the University's Academic Registry, and for this I am deeply indebted to her.
+
+The Robotarium Cluster provided the key high-performance computing resources I needed to train over 1000 neural networks during my Doctoral Research. I acknowledge and thank Hans-Nikolai Viessmann for his support administrating the Cluster.\\
+
+Finally, this thesis uses computational implementation of algorithms from third party libraries. For this I acknowledge the authors of \textit{Keras}, \textit{Theano}, and \textit{scikit-learn}. Without these open source libraries, the development of science would be much slower than currently is.
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	DECLARATION PAGE
+%----------------------------------------------------------------------------------------
+% Removed for arXiv.
+
+\pagestyle{mainmatter}
+\setcounter{tocdepth}{2}
+\tableofcontents % Print the table of contents
+
+%----------------------------------------------------------------------------------------
+
+\listoftables % Print a list of tables
+
+%----------------------------------------------------------------------------------------
+
+\listoffigures % Print a list of figures
+
+%----------------------------------------------------------------------------------------
+%	SYMBOLS PAGE
+%----------------------------------------------------------------------------------------
+
+%\cleardoublepage
+\chapter{Symbols and Abbreviations}
+
+\setstretch{1.5} % Set the line spacing to 1.5, this makes the following tables easier to read
+
+\begin{longtable}[c]{ll}
+	
+	$x_i$			& i-th element of vector $\textbf{x}$\\
+	
+	$\alpha$   		& Learning Rate\\
+	$B$				& Batch Size\\
+	$M$				& Number of Training Epochs or GD iterations\\
+	
+	$\hat{y}$		& Predicted Value\\
+	$y$				& Ground Truth Scalar Label\\
+	$x$				& Input Scalar\\
+	$\textbf{x}$	& Input Vector\\
+	$C$				& Number of Classes\\
+					&   \\
+	$Tr$			& Training Set\\
+	$Vl$			& Validation Set\\
+	$Ts$			& Test Set\\
+					&   \\
+	$\Theta$		& Parameter set of a neural network\\
+	$\textbf{w}$	& Weight vector of a layer of a neural network\\
+					&	\\
+	\textbf{ML}		& Machine Learning\\			
+	\textbf{CNN}	& Convolutional Neural Network(s)\\
+	\textbf{DNN}	& Deep Neural Network(s)\\
+	
+	\textbf{GD}		& Gradient Descent\\
+    \textbf{MGD}	& Mini-Batch Gradient Descent\\
+	\textbf{SGD}	& Stochastic Gradient Descent\\
+	
+	\textbf{GPU}	& Graphics Processing Unit\\
+	
+	\textbf{FLS}	& Forward-Looking Sonar\\
+	
+\end{longtable}
+
+%----------------------------------------------------------------------------------------
+%	NOTATION PAGE
+%----------------------------------------------------------------------------------------
+\chapter{Neural Network Notation}
+
+Through this thesis we use the following notation for neural network layers:
+
+\begin{description}
+	\item[Conv($f$, $w \times h$)] \hfill \\
+		Two Dimensional Convolutional layer with $f$ filters of $w \times h$ spatial size.
+	\item[MaxPool($w \times h$)] \hfill \\
+		Two Dimensional Max-Pooling layer with spatial sub-sampling size $w \times h$.
+	\item[AvgPool()] \hfill \\
+		Two Dimensional Global Average Pooling layer.
+	\item[FC($n$)] \hfill \\
+		Fully Connected layer with $n$ neurons.
+	
+\end{description}
+
+\mainmatter
+\pagestyle{mainmatter}
+
+\input{chapters/introduction.tex}
+\input{chapters/marine-debris.tex}
+\input{chapters/background.tex}
+\input{chapters/sonar-image-classification.tex}
+\input{chapters/limits-neural-networks.tex}
+\input{chapters/matching-patches-sonar.tex}
+\input{chapters/detection-proposals-sonar.tex}
+\input{chapters/applications.tex}
+\input{chapters/conclusions.tex}
+
+
+%----------------------------------------------------------------------------------------
+
+\appendix
+\input{chapters/appendices.tex}
+
+\backmatter
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\bibliography{thesis-biblio}
+\bibliographystyle{plain}
+
+%----------------------------------------------------------------------------------------
+
+%\printindex % Print the index at the very end of the document
+
+\end{document}
